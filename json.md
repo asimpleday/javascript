@@ -176,3 +176,53 @@ console.log(JSON.stringify(o, fn));   // '{"username":"tom","likes":"sing"}'
 上面代码中，`age` 属性经过处理后，返回了 `undefined`，于是该属性被忽略了。
 ### 第三个参数
 `JSON.stringify()` 还可以接收第三个参数，用于增加返回的 JSON 字符串的可读性。如果是数值，表示每个属性前面添加的空格(最多不超过10个)；如果是字符串(不超过10个字符)，则该字符串会添加在每行前面。
+```
+var o = {username: "tom", age: 25};
+console.log(JSON.stringify(o));   // '{"username":"tom","age":25}'
+console.log(JSON.stringify(o, null, 2));
+// '{
+//    "username": "tom",
+//    "age": 25
+//  }'
+
+console.log(JSON.stringify(o, null, "--"));
+// '{
+//  --"username": "tom",
+//  --"age": 25
+//  }'
+```
+## JSON.parse()
+`JSON.parse()` 方法用于将 JSON 字符串转换为对应的值。
+```
+console.log(JSON.parse("{}"));   // {}
+console.log(JSON.parse("true"));   // true
+console.log(JSON.parse('"true"'));   // "true"
+console.log(JSON.parse('[1, 5, "false"]'));   // [1, 5, "false"]
+console.log(JSON.parse('null'));   // "null"
+console.log(JSON.parse('{"name": "张三"}'));   // {name: "张三"}
+```
+如果传入的字符串不是有效的 JSON 格式， `JSON.parse()` 方法将会报错。
+```
+console.log(JSON.parse('abc'));   // 报错
+```
+上面代码中，单引号字符串不符合 JSON 格式，所以报错。
+为了处理解析错误，可以将 `JSON.parse()` 方法放在 `try...catch` 代码块中。
+```
+try{
+	JSON.parse('abc')
+}catch(e){
+	console.log(e);
+}
+```
+`JSON.parse()` 可以接收一个处理函数，作为第二个参数，用法和 `JSON.stringify()`方法类似。
+```
+var str = '{"a": 1, "b": 2}';
+function fn (key, value) {
+    if (key === "a") {
+        return value + 10;
+    }
+    return value;
+}
+console.log(JSON.parse(str, fn));   // {a: 11, b: 2}
+```
+上面代码中，`JSON.parse()` 的第二个参数是一个函数，如果键是 `a`，该函数会将值加上10。
