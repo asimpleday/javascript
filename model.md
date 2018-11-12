@@ -121,6 +121,8 @@ function callback(e) {
 
 其中，`p` 节点有俩个监听函数 ( addEventListener 方法第三个参数的不同，会导致绑定俩个监听函数 )，因此，它们都会因为 `click` 事件触发一次。所以 `p` 会在 `target` 阶段有2次输出。
 
+注意，浏览器总是假定 `click` 事件的目标节点，就是点击位置嵌套最深的那个节点（本例是`<div>`节点里面的`<p>`节点）。所以，`<p>`节点的捕获阶段和冒泡阶段，都会显示为`target`阶段。
+
 事件传播的最上层对象是 `window`，接着依次是 `document`，`html` ( `document.documentElement` )，`body`( `document.body` )。也就是说，上例的事件传播顺序，在捕获阶段依次为`window`、`documen`、`html`、`body`、`div`、`p`，在冒泡阶段依次为 `p`、`div`、`body`、`html`、`document`、`window`。
 ## 事件的代理
 由于事件会在冒泡阶段传播到父节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件。这种方法叫做事件的代理。
